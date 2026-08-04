@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM 'http://java.sun.com/dtd/properties.dtd'>
+<properties>
+    <!-- Isolated local test server. It never writes to GPS_Server/data. -->
+    <entry key='database.driver'>org.h2.Driver</entry>
+    <entry key='database.url'>jdbc:h2:./database</entry>
+    <entry key='database.user'>sa</entry>
+    <entry key='database.password'></entry>
+    <entry key='web.port'>9090</entry>
+</properties>

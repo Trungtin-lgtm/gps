@@ -1,0 +1,1 @@
+cmd: java -jar tracker-server.jar conf\gpsmaster.xml

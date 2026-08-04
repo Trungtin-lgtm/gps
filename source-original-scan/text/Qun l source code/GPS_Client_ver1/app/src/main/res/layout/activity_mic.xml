@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MicActivity">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/btnStream"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="0.5"
+                android:text="Streaming" />
+
+            <TextView
+                android:id="@+id/textViewDataRate"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:text="0 o/s" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/editTextDestinationIP"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_weight="0.6"
+                android:digits="0123456789."
+                android:ems="10"
+                android:hint="DestinationIP"
+                android:inputType="number|numberDecimal"
+                android:text="DestinationIP" />
+
+            <EditText
+                android:id="@+id/editTextDestinationPort"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_weight="0.4"
+                android:ems="10"
+                android:hint="DestinationPort"
+                android:inputType="number" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textViewPayloadType"
+                style="@android:style/Widget.DeviceDefault.TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_weight="0.5"
+                android:height="40dp"
+                android:text="PayloadType"
+                android:textColor="?attr/editTextColor"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/spinnerPayloadType"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_weight="0.5"
+                android:spinnerMode="dialog" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textViewSampleRate"
+                style="@android:style/Widget.DeviceDefault.TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_weight="0.5"
+                android:height="40dp"
+                android:text="Sample rate"
+                android:textColor="?attr/editTextColor"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/spinnerSampleRate"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_weight="0.5"
+                android:spinnerMode="dialog" />
+        </TableRow>
+
+        <!-- ✅ Voice detection row -->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/VoiceDetection"
+                style="@android:style/Widget.DeviceDefault.TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_weight="0.5"
+                android:height="40dp"
+                android:text="Voice Threshold"
+                android:textColor="?attr/editTextColor"
+                android:textSize="18sp" />
+            <EditText
+                android:id="@+id/editTextThreshold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_weight="0.5"
+                android:hint="0"
+                android:inputType="number"/>
+        </TableRow>
+
+    </TableLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
