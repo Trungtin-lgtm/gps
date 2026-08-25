@@ -10,6 +10,7 @@ import alarm from './resources/alarm.mp3';
 import { eventsActions } from './store/events';
 import useFeatures from './common/util/useFeatures';
 import { useAttributePreference } from './common/util/preferences';
+import { filterLivePositions } from './common/util/gpsKalman';
 
 const logoutCode = 4000;
 
@@ -51,7 +52,7 @@ const SocketController = () => {
           }
           const positionsResponse = await fetch('/api/positions');
           if (positionsResponse.ok) {
-            dispatch(sessionActions.updatePositions(await positionsResponse.json()));
+            dispatch(sessionActions.updatePositions(filterLivePositions(await positionsResponse.json())));
           }
           if (devicesResponse.status === 401 || positionsResponse.status === 401) {
             navigate('/login');
@@ -69,7 +70,7 @@ const SocketController = () => {
         dispatch(devicesActions.update(data.devices));
       }
       if (data.positions) {
-        dispatch(sessionActions.updatePositions(data.positions));
+        dispatch(sessionActions.updatePositions(filterLivePositions(data.positions)));
       }
       if (data.events) {
         if (!features.disableEvents) {

@@ -199,16 +199,6 @@ export default () => {
       attribute: 'hereKey',
     },
     {
-      id: 'autoNavi',
-      title: t('mapAutoNavi'),
-      style: styleCustom({
-        tiles: [1, 2, 3, 4].map((i) => `https://webrd0${i}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}`),
-        minZoom: 3,
-        maxZoom: 18,
-      }),
-      available: true,
-    },
-    {
       id: 'ordnanceSurvey',
       title: t('mapOrdnanceSurvey'),
       style: 'https://api.os.uk/maps/vector/v1/vts/resources/styles?key=EAZ8p83u72FTGiLjLC2MsTAl1ko6XQHC',

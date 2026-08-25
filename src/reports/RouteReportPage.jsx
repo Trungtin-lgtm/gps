@@ -90,6 +90,7 @@ const RouteReportPage = () => {
   const [routePositions, setRoutePositions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedDeviceId, setSelectedDeviceId] = useState(null);
+  const [showRawRoute, setShowRawRoute] = useState(false);
   const [playbackIndex, setPlaybackIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [playbackRate, setPlaybackRate] = useState(1);
@@ -123,21 +124,30 @@ const RouteReportPage = () => {
     return index % 2 === 0 ? '#f9fbfc' : '#eef9f3';
   };
 
-  const selectedMapPositions = useMemo(
-    () => selectedRoute?.replayPositions || [],
+  const rawFilteredPositions = useMemo(
+    () => (selectedRoute?.rawPositions || []).filter((position) => {
+      const lat = Number(position.latitude);
+      const lon = Number(position.longitude);
+      return Number.isFinite(lat) && Number.isFinite(lon) && (lat !== 0 || lon !== 0);
+    }),
     [selectedRoute],
+  );
+
+  const selectedMapPositions = useMemo(
+    () => (showRawRoute ? rawFilteredPositions : (selectedRoute?.replayPositions || [])),
+    [showRawRoute, rawFilteredPositions, selectedRoute],
   );
 
   const selectedRoutePoints = useMemo(
-    () => selectedRoute?.displayPositions || [],
-    [selectedRoute],
+    () => (showRawRoute ? rawFilteredPositions : (selectedRoute?.displayPositions || [])),
+    [showRawRoute, rawFilteredPositions, selectedRoute],
   );
 
   const roadMatchInput = useMemo(() => (
-    selectedRoutePoints.length <= MAX_BROWSER_ROAD_MATCH_POINTS
+    !showRawRoute && selectedRoutePoints.length <= MAX_BROWSER_ROAD_MATCH_POINTS
       ? selectedRoutePoints
       : []
-  ), [selectedRoutePoints]);
+  ), [selectedRoutePoints, showRawRoute]);
   const roadMatchInputRef = useRef(roadMatchInput);
   const roadMatchKey = useMemo(() => roadMatchInput
     .map((position) => [
@@ -468,6 +478,21 @@ const RouteReportPage = () => {
               )}
             </MapView>
             <MapScale />
+            <Chip
+              label={showRawRoute ? 'Lộ trình thô: BẬT' : 'Lộ trình thô: TẮT'}
+              color={showRawRoute ? 'secondary' : 'default'}
+              size="small"
+              onClick={() => setShowRawRoute((value) => !value)}
+              sx={{
+                position: 'absolute',
+                zIndex: 2,
+                right: 16,
+                top: 16,
+                fontWeight: 600,
+                cursor: 'pointer',
+              }}
+            />
+
             {roadMatchMessage(roadMatch.status) && (
               <Chip
                 label={roadMatchMessage(roadMatch.status)}
@@ -574,7 +599,6 @@ const RouteReportPage = () => {
               handleSchedule={handleSchedule}
               multiDevice
               includeGroups
-              groupOnly
               loading={loading}
             />
           </div>

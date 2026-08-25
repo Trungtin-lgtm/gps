@@ -14,6 +14,7 @@ import MapDefaultCamera from '../map/main/MapDefaultCamera';
 import MapLiveRoutes from '../map/main/MapLiveRoutes';
 import MapPositions from '../map/MapPositions';
 import MapOverlay from '../map/overlay/MapOverlay';
+import MapVietnamTerritory from '../map/MapVietnamTerritory';
 import MapGeocoder from '../map/geocoder/MapGeocoder';
 import MapScale from '../map/MapScale';
 import MapNotification from '../map/notification/MapNotification';
@@ -42,6 +43,7 @@ const MainMap = ({ filteredPositions, selectedPosition, onEventsClick }) => {
         }> */}
         <MapView>
           <MapOverlay />
+          <MapVietnamTerritory />
           <MapGeofence />
           <MapAccuracy positions={filteredPositions} />
           <MapLiveRoutes />
