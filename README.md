@@ -75,6 +75,81 @@ http://<địa-chỉ-server>:9055/?id=<uniqueId>&timestamp=<unix>&lat=<lat>&lon=
 
 ---
 
+## Truy cập / nhận dữ liệu từ xa bằng ngrok
+
+Mặc định server chỉ chạy trong máy (`localhost`). Muốn **thiết bị GPS ở mạng khác gửi về**, hoặc **xem web từ xa**, dùng **ngrok** để tạo một địa chỉ public trỏ về cổng trên máy.
+
+### Bước 1 — Cài ngrok
+
+```powershell
+winget install Ngrok.Ngrok
+```
+
+Mở **cửa sổ PowerShell mới** sau khi cài, kiểm tra:
+
+```powershell
+ngrok version
+```
+
+### Bước 2 — Gắn authtoken (chỉ làm một lần)
+
+1. Tạo tài khoản miễn phí tại https://dashboard.ngrok.com
+2. Vào mục **Your Authtoken**, copy token, rồi chạy:
+
+```powershell
+ngrok config add-authtoken <TOKEN_CUA_BAN>
+```
+
+### Bước 3 — Mở cổng ra internet
+
+Chạy trong một cửa sổ PowerShell riêng (giữ mở). Chọn cổng theo nhu cầu:
+
+```powershell
+# Cho thiết bị GPS gửi dữ liệu từ xa (cổng nạp 9055)
+ngrok http 9055 --scheme=http --domain=overact-dolly-cobalt.ngrok-free.dev
+```
+
+```powershell
+# Cho xem web / gọi API từ xa (backend 9090)
+ngrok http 9090
+```
+
+ngrok sẽ hiện dòng `Forwarding  https://xxxx-xx-xx.ngrok-free.app -> http://localhost:9055`. Dùng URL `https://xxxx...ngrok-free.app` đó thay cho `localhost`:
+
+- **Thiết bị gửi vị trí**: `https://xxxx.ngrok-free.app/?id=<uniqueId>&lat=...&lon=...&speed=...`
+- **Xem web** (nếu mở 9090): mở `https://xxxx.ngrok-free.app` trên trình duyệt.
+
+### Chạy nhiều cổng cùng lúc (tùy chọn)
+
+Tạo file cấu hình rồi bật một lần. Xem đường dẫn file config bằng `ngrok config check`, mở nó và thêm:
+
+```yaml
+version: "3"
+tunnels:
+  gps:
+    proto: http
+    addr: 9055
+  web:
+    proto: http
+    addr: 9090
+```
+
+Rồi chạy:
+
+```powershell
+ngrok start --all
+```
+
+### Lưu ý
+
+- **URL đổi mỗi lần khởi động lại** (bản miễn phí). Bản trả phí mới có domain cố định.
+- Bản free có thể **giới hạn số tunnel** đồng thời — nếu `ngrok start --all` báo lỗi, chạy **từng cổng một** ở các cửa sổ khác nhau, hoặc chỉ mở cổng đang cần.
+- Bản free chèn **trang cảnh báo** khi mở bằng **trình duyệt** (không ảnh hưởng thiết bị gửi request thô). Muốn bỏ khi gọi API, thêm header `ngrok-skip-browser-warning`.
+- **Không nên** đưa cổng nạp dữ liệu ra internet lâu dài mà không kiểm soát — ai biết URL đều có thể gửi vị trí giả. Chỉ bật khi cần, tắt khi xong.
+- Muốn mở **frontend dev (cổng 3000)** qua ngrok: Vite chặn host lạ, phải thêm `allowedHosts: ['.ngrok-free.app']` vào phần `server` trong `vite.config.js`. Đơn giản hơn là mở cổng **9090** (backend phục vụ sẵn web).
+
+---
+
 ## (Tùy chọn) Build lại Backend đã tích hợp calibrate
 
 Chỉ cần khi muốn backend tự calibrate + lưu. Yêu cầu **JDK 17** (đã cài tại `C:\Program Files\Eclipse Adoptium\jdk-17...`).
